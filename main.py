@@ -2,8 +2,7 @@ from aiogram import Bot, Dispatcher, types, executor
 import socketio
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import json
-
-API_TOKEN = '6175480914:AAHY4t2FMYwJsHhoP4d_yQRpckkAngCfoFo'
+from configs import *
 
 WEBSOCKET_URL = 'http://127.0.0.1:5000'
 
@@ -46,7 +45,12 @@ async def message(data):
     try:
         chat_id = int(data["chat_id"])
         text = data["message"]
+        spot_id = data.get("spot_id")
+        spot_tablet_id = data.get("spot_tablet_id")
+        transaction_id = data.get("transaction_id")
+        url = f"https://joinposter.com/api/transactions.closeTransaction?token={WEB_TOKEN}&spot_id={spot_id}&spot_tablet_id={spot_tablet_id}&transaction_id={transaction_id}&payed_cash={payed_cash}"
         keyboard = [
+            [InlineKeyboardButton("Доставлено", url=url)],
             [InlineKeyboardButton("Яндекс Карты", url="https://yandex.ru/maps")],
             [InlineKeyboardButton("Google Maps", url="https://maps.google.com")],
             [InlineKeyboardButton("2GIS", url="https://2gis.ru")]
@@ -57,3 +61,4 @@ async def message(data):
         print("Error processing message:", e)
 
 executor.start_polling(dp, skip_updates=True)
+
