@@ -29,7 +29,8 @@ async def start(message: types.Message):
     if not sio.connected:
         await connect_to_socketio()
 
-    await message.answer("Привет! Я бот.")
+    # Отправляем сообщение с ID пользователя
+    await message.answer(f"Привет! Ваш ID: {message.from_user.id}")
 
 @sio.on('message')
 async def message(data):
